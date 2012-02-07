@@ -1,0 +1,2 @@
+class Spaceable::Generator
+end
