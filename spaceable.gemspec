@@ -2,7 +2,7 @@ require File.expand_path("../lib/spaceable/version", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "spaceable"
-  s.version     = NewGem::VERSION
+  s.version     = Spaceable::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Ryan Muller"]
   s.email       = ["cognitionmachine@gmail.com"]
@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
 
   # If you have other dependencies, add them here
   s.add_dependency "factory_girl_rails", "1.0"
+
+  s.add_development_dependency "sqlite3"
 
   # If you need to check in files that aren't .rb files, add them here
   s.files        = Dir["{lib}/**/*.rb", "bin/*", "LICENSE", "*.md"]
