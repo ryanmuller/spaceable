@@ -4,10 +4,8 @@ describe Spaceable::Memory do
 
   before(:each) do
     @user = Factory(:user)
-    @course = Factory(:course)
-    @component = @course.components.create!(:name => "My component")
-    @user.enroll!(@course)
-    @memory = @user.memories.find_by_component_id(@component)
+    @component = Factory(:component)
+    @memory = @user.memories.build(:component_id => @component.id)
     @default_ease = 2.5
   end
 
@@ -61,18 +59,6 @@ describe Spaceable::Memory do
     end.should change(MemoryRating, :count).by(1)
   end
 
-  describe "using in_course scope" do
-
-    it "should return memories in that course" do
-      @user.memories.in_course(@course.id).should include(@memory)
-    end
-
-    it "should not return memories in another course" do
-      @another_course = Factory(:course, :name => "Course 2")
-      @user.memories.in_course(@another_course.id).should_not include(@memory)
-    end
-  end
-  
   describe "using due_before scope" do
     
     it "should return memories actually due now" do
@@ -87,20 +73,6 @@ describe Spaceable::Memory do
       @memory.views += 1
       @memory.save
       @user.memories.due_before(Time.now.utc).should_not include(@memory)
-    end
-  end
-
-  describe "using course_exercise scope" do
-
-    it "should not include unviewed memories" do
-      @user.memories.course_exercise(@course).should_not include(@memory)
-    end
-
-    it "should include viewed, due memories from the course" do
-      @memory.view(4)
-      @memory.due = DateTime.now.utc - 15.minutes
-      @memory.save!
-      @user.memories.course_exercise(@course).should include(@memory)
     end
   end
 

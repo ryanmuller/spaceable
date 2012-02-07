@@ -2,12 +2,11 @@ module Spaceable
   class Memory < ::ActiveRecord::Base
     has_many :memory_ratings, :dependent => :destroy 
     
-    belongs_to :user
-    belongs_to :component
+    belongs_to :component, :polymorphic => :true
+    belongs_to :learner,   :polymorphic => :true
 
     before_create lambda { self.due = Time.now}
 
-    scope :in_course, lambda { |course_id| joins(:component).merge(Component.where(:course_id => course_id)) }
     scope :due_before, lambda { |time| where("due <= ? AND views > 0", time) }
     scope :latest_studied, :order => 'last_viewed DESC'
 
@@ -21,14 +20,6 @@ module Spaceable
     
     def viewed?
       return !last_viewed.nil?
-    end
-
-    def has_quiz?
-      return component.quizzes.length != 0
-    end
-
-    def has_exercise?
-      return component.quizzes.exercises.length != 0
     end
 
     def view(quality)
@@ -63,7 +54,6 @@ module Spaceable
         self.interval = interval*ease
       end
 
-      #self.due = Time.now + interval.days
       self.due = Time.now + (interval * 24 * 60 * 60).round
 
       self.save()
