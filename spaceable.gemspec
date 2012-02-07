@@ -16,9 +16,11 @@ Gem::Specification.new do |s|
   s.rubyforge_project         = "spaceable"
 
   # If you have other dependencies, add them here
-  s.add_dependency "factory_girl_rails", "1.0"
 
+  s.add_runtime_dependency 'rails', '~> 3.1'
+  s.add_development_dependency 'rspec', '~> 2.6'
   s.add_development_dependency "sqlite3"
+  s.add_development_dependency "factory_girl_rails"
 
   # If you need to check in files that aren't .rb files, add them here
   s.files        = Dir["{lib}/**/*.rb", "bin/*", "LICENSE", "*.md"]
