@@ -3,11 +3,11 @@ require 'spec_helper'
 describe Spaceable::MemoryRating do
 
   before(:each) do
-    @user = Factory(:user)
-    @component = Factory(:component)
+    @user = User.create(:name => "Curious George")
+    @component = Component.create(:name => "how to ride a bike") 
 
-    @memory = @user.memories.build(:component_id => @component.id)
-    @memory.save
+    @memory = Spaceable::Memory.create(:component => @component)
+    @user.memories << @memory
     @quality = 4
     @memory.view(@quality)
     @memory_rating = @memory.memory_ratings.first

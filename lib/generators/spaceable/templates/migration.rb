@@ -4,10 +4,10 @@ class SpaceableMigration < ActiveRecord::Migration
       t.references :learner, :polymorphic => true
       t.references :component, :polymorphic => true
 
-      t.decimal :ease
-      t.integer :interval
-      t.integer :views
-      t.integer :streak
+      t.decimal :ease,     :default => 2.5
+      t.decimal :interval, :default => 1.0
+      t.integer :views,    :default => 0
+      t.integer :streak,   :default => 0
       t.datetime :last_viewed
       t.datetime :due
 
@@ -21,6 +21,9 @@ class SpaceableMigration < ActiveRecord::Migration
     create_table :memory_ratings do |t|
       t.references :memory
       t.integer :quality
+      t.integer :streak
+      t.decimal :ease
+      t.integer :interval
 
       t.timestamps
     end

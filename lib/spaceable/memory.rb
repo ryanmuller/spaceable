@@ -1,19 +1,16 @@
 module Spaceable
   class Memory < ::ActiveRecord::Base
+
     has_many :memory_ratings, :dependent => :destroy 
     
     belongs_to :component, :polymorphic => :true
     belongs_to :learner,   :polymorphic => :true
 
-    before_create lambda { self.due = Time.now}
+    before_create lambda { self.due = Time.now }
 
     scope :due_before, lambda { |time| where("due <= ? AND views > 0", time) }
     scope :latest_studied, :order => 'last_viewed DESC'
 
-    def course
-      component.course
-    end
-    
     def due?
       return self.due <= Time.now.utc
     end
@@ -58,9 +55,11 @@ module Spaceable
 
       self.save()
 
-      memory_rating = self.memory_ratings.build(:memory_id => self, :quality => quality,
-                                                :streak => streak, :interval => interval,
-                                                :ease => ease)
+      memory_rating = Spaceable::MemoryRating.create(:quality => quality,
+                                                     :streak => streak, 
+                                                     :interval => interval,
+                                                     :ease => ease)
+      self.memory_ratings << memory_rating
       memory_rating.save
       return true
     end

@@ -1,3 +1,3 @@
 class User < ActiveRecord::Base
-  has_many :memories, :as => :learner
+  acts_as_learner
 end

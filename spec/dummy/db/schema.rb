@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120207175921) do
+ActiveRecord::Schema.define(:version => 20120208000642) do
 
   create_table "components", :force => true do |t|
     t.string   "name"
@@ -24,14 +24,14 @@ ActiveRecord::Schema.define(:version => 20120207175921) do
     t.string   "learner_type"
     t.integer  "component_id"
     t.string   "component_type"
-    t.decimal  "ease"
-    t.integer  "interval"
-    t.integer  "views"
-    t.integer  "streak"
+    t.decimal  "ease",           :default => 2.5
+    t.decimal  "interval",       :default => 1.0
+    t.integer  "views",          :default => 0
+    t.integer  "streak",         :default => 0
     t.datetime "last_viewed"
     t.datetime "due"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   add_index "memories", ["component_id"], :name => "index_memories_on_component_id"
@@ -41,6 +41,9 @@ ActiveRecord::Schema.define(:version => 20120207175921) do
   create_table "memory_ratings", :force => true do |t|
     t.integer  "memory_id"
     t.integer  "quality"
+    t.integer  "streak"
+    t.decimal  "ease"
+    t.integer  "interval"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

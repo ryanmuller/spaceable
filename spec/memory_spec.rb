@@ -3,14 +3,16 @@ require 'spec_helper'
 describe Spaceable::Memory do
 
   before(:each) do
-    @user = Factory(:user)
-    @component = Factory(:component)
-    @memory = @user.memories.build(:component_id => @component.id)
+    @user = User.create(:name => "Curious George")
+    @component = Component.create(:name => "how to ride a bike")
+    @memory = Spaceable::Memory.create(:component => @component)
+    @memory.save
+    @user.memories << @memory
     @default_ease = 2.5
   end
 
-  it "should respond to user" do
-    @memory.should respond_to(:user)
+  it "should respond to learner" do
+    @memory.should respond_to(:learner)
   end
 
   it "should respond to component" do
@@ -56,7 +58,7 @@ describe Spaceable::Memory do
   it "should create a new memory rating when viewed" do
     lambda do
       @memory.view(4)
-    end.should change(MemoryRating, :count).by(1)
+    end.should change(Spaceable::MemoryRating, :count).by(1)
   end
 
   describe "using due_before scope" do
