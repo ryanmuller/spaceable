@@ -8,7 +8,7 @@ module Spaceable
     module ClassMethods
       def acts_as_component
         class_eval do
-          has_many :memories, :as => :component
+          has_many :memories, :as => :component, :class_name => "Spaceable::Memory"
         end
       end
     end
