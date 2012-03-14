@@ -8,7 +8,8 @@ module Spaceable
 
     before_create lambda { self.due = Time.now }
 
-    scope :due_before, lambda { |time| where("due <= ? AND views > 0", time) }
+    default_scope :order => 'due'
+    scope :due_before, lambda { |time| where("due <= ?", time) }
     scope :latest_studied, :order => 'last_viewed DESC'
 
     def due?
